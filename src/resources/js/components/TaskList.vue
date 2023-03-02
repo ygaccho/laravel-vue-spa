@@ -1,5 +1,15 @@
+<script setup>
+  import Button from './Button.vue'
+  // ToDo : ダミーデータは、for文で回して書く
+  const tasks = [
+    {number: 1, title: '仮のタイトル1', content: '仮の内容1', personInCharge: '仮の担当者1'},
+    {number: 2, title: '仮のタイトル2', content: '仮の内容2', personInCharge: '仮の担当者2'},
+    {number: 3, title: '仮のタイトル3', content: '仮の内容3', personInCharge: '仮の担当者3'},
+  ]
+</script>
+
 <template>
-  <table>
+  <v-table>
     <thead>
       <tr>
         <th>番号</th>
@@ -12,51 +22,15 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <th>1</th>
-        <td>ゴミ捨て</td>
-        <td>明日の朝までに燃えるゴミを出す。</td>
-        <td>田中太郎</td>
-      <td>
-        <router-link to="/tasks/1">詳細</router-link>
-      </td>
-      <td>
-        <router-link to="/tasks/1/edit">編集</router-link>
-      </td>
-      <td>
-        <button>削除</button>
-      </td>
-      </tr>
-      <tr>
-        <th>2</th>
-        <td>読書</td>
-        <td>三四郎を100ページまで読む。</td>
-        <td>鈴木次郎</td>
-        <td>
-          <router-link to="/tasks/2">詳細</router-link>
-        </td>
-        <td>
-          <router-link to="/tasks/2/edit">編集</router-link>
-        </td>
-        <td>
-          <button>削除</button>
-        </td>
-      </tr>
-      <tr>
-        <th>3</th>
-        <td>勉強</td>
-        <td>数学の問題集を50ページまで解く。</td>
-        <td>佐藤花子</td>
-        <td>
-          <router-link to="/tasks/3">詳細</router-link>
-        </td>
-        <td>
-          <router-link to="/tasks/3/edit">編集</router-link>
-        </td>
-        <td>
-          <button>削除</button>
-        </td>
+      <tr v-for="task in tasks" key="task.number">
+        <th>{{ task.number }}</th>
+        <td>{{ task.title }}</td>
+        <td>{{ task.content }}</td>
+        <td>{{ task.personInCharge }}</td>
+        <td><Button :link="'/tasks/' + task.number" name="詳細" /></td>
+        <td><Button :link="'/tasks/' + task.number + '/edit'" name="編集" /></td>
+        <td><Button name="削除" /></td>
       </tr>
     </tbody>
-  </table>
+  </v-table>
 </template>

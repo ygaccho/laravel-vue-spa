@@ -1,17 +1,20 @@
+<script setup>
+  import Button from './Button.vue'
+</script>
+
 <template>
-  <form>
-    <div>
-      <label for="title">タイトル</label>
-      <input type="text" id="title">
-    </div>
-    <div>
-      <label for="content">内容</label>
-      <input type="text" id="content">
-    </div>
-    <div>
-      <label for="person-in-charge">担当者</label>
-      <input type="text" id="person-in-charge">
-    </div>
-    <button type="submit">作成</button>
-  </form>
+  <v-sheet width="300" class="mx-auto">
+    <v-form>
+      <v-text-field
+        label="タイトル"
+      ></v-text-field>
+      <v-text-field
+        label="内容"
+      ></v-text-field>
+      <v-text-field
+        label="担当者"
+      ></v-text-field>
+      <Button name="追加" block class="mt-2"/>
+  </v-form>
+  </v-sheet>
 </template>
