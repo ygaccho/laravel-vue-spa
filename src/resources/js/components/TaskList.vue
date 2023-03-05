@@ -1,11 +1,25 @@
 <script setup>
-  import Button from './Button.vue'
-  // ToDo : ダミーデータは、for文で回して書く
-  const tasks = [
-    {number: 1, title: '仮のタイトル1', content: '仮の内容1', personInCharge: '仮の担当者1'},
-    {number: 2, title: '仮のタイトル2', content: '仮の内容2', personInCharge: '仮の担当者2'},
-    {number: 3, title: '仮のタイトル3', content: '仮の内容3', personInCharge: '仮の担当者3'},
-  ]
+import { ref, onMounted } from 'vue';
+import Button from './Button.vue'
+
+const tasks = ref([])
+
+function getTasks() {
+  fetch('http://localhost:80/api/tasks')
+    .then(res => res.json())
+    .then(json => tasks.value = json)
+}
+
+onMounted(() => {
+  getTasks()
+})
+
+function deleteTask(id) {
+  fetch('http://localhost:80/api/tasks/' + id, {
+    method: 'DELETE',
+  })
+  .then(res => getTasks())
+}
 </script>
 
 <template>
@@ -22,14 +36,14 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="task in tasks" key="task.number">
-        <th>{{ task.number }}</th>
+      <tr v-for="task in tasks" :key="task.id">
+        <th>{{ task.id }}</th>
         <td>{{ task.title }}</td>
         <td>{{ task.content }}</td>
-        <td>{{ task.personInCharge }}</td>
-        <td><Button :link="'/tasks/' + task.number" name="詳細" /></td>
-        <td><Button :link="'/tasks/' + task.number + '/edit'" name="編集" /></td>
-        <td><Button name="削除" /></td>
+        <td>{{ task.person_in_charge }}</td>
+        <td><Button :link="'/tasks/' + task.id" name="詳細" /></td>
+        <td><Button :link="'/tasks/' + task.id + '/edit'" name="編集" /></td>
+        <td><Button name="削除" @click="deleteTask(task.id)"/></td>
       </tr>
     </tbody>
   </v-table>
