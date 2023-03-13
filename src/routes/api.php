@@ -16,11 +16,10 @@ use App\Http\Controllers\TaskController;
 
 Route::get('/tasks', [TaskController::class, 'index']);
 
-# ToDo : {task}はどうやってTaskに変換されてコントローラーのメソッドに渡されるのかソースを確認
-Route::get('/tasks/{task}', [TaskController::class, 'show']);
+Route::get('/tasks/{id}', [TaskController::class, 'show']);
 
 Route::post('/tasks', [TaskController::class, 'store']);
 
-Route::put('/tasks/{task}', [TaskController::class, 'update']);
+Route::put('/tasks/{id}', [TaskController::class, 'update']);
 
-Route::delete('/tasks/{task}', [TaskController::class, 'destroy']);
+Route::delete('/tasks/{id}', [TaskController::class, 'destroy']);

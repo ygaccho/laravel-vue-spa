@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use \Symfony\Component\HttpFoundation\Response;
 use App\Models\Task;
 class TaskController extends Controller
 {
@@ -11,26 +12,56 @@ class TaskController extends Controller
         return Task::all();
     }
 
-    # ToDo : 渡ってきたTaskをどうやってJSONに変換して返しているのかソースを確認
-    public function show(Task $task)
+    public function show($id)
     {
-        return $task;
+        $task = Task::find($id);
+        if ($task) {
+            return $task;
+        } else {
+            return response()->json([
+                "message" => "Task not found",
+            ], Response::HTTP_NOT_FOUND);
+        }
     }
 
     public function store(Request $request)
     {
-        return Task::create($request->all());
+        Task::create($request->all());
+        return response()->json([
+            "message" => "created successfully",
+        ], Response::HTTP_CREATED);
     }
     
-    public function update(Request $request, Task $task)
+    public function update(Request $request, $id)
     {
-        $task->update($request->all());
-        return $task;
+        $task = Task::find($id);
+        if ($task) {
+            $task->title = is_null($request->title) ? $task->title : $request->title;
+            $task->content = is_null($request->content) ? $task->content : $request->content;
+            $task->person_in_charge = is_null($request->person_in_charge) ? $task->person_in_charge : $request->person_in_charge;
+            $task->save();
+            return response()->json([
+                "message" => "updated successfully",
+            ], Response::HTTP_OK);
+        } else {
+            return response()->json([
+                "message" => "Task not found",
+            ], Response::HTTP_NOT_FOUND);
+        }
     }
 
-    public function destroy(Task $task)
+    public function destroy($id)
     {
-        $task->delete();
-        return $task;
+        $task = Task::find($id);
+        if ($task) {
+            $task->delete();
+            return response()->json([
+                "message" => "deleted successfully",
+            ], Response::HTTP_OK);
+        } else {
+            return response()->json([
+                "message" => "Task not found",
+            ], Response::HTTP_NOT_FOUND);
+        }
     }
 }
